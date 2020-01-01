@@ -10,7 +10,7 @@ export default function cart(
   action: IAction<IProduct | number | { id: number; amount: number }>
 ) {
   switch (action.type) {
-    case CartActions.ADD_TO_CART:
+    case CartActions.ADD_TO_CART_SUCCESS:
       return produce(state, draft => {
         const product = action.payload as IProduct;
 

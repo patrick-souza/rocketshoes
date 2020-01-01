@@ -3,13 +3,24 @@ import { MdAddShoppingCart } from 'react-icons/md';
 import { ProductList } from './styles';
 import api from 'services/api';
 import { formatPrice } from 'util/format';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IProduct } from 'store/modules/cart/types';
 import { addToCart } from 'store/modules/cart/actions';
+import { IAppState } from 'store';
 
 export default function Home() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const dispatch = useDispatch();
+
+  const amount = useSelector((state: IAppState) => {
+    const amount = state.cart.reduce((amount: any, product) => {
+      amount[product.id] = product.amount;
+
+      return amount;
+    }, {});
+
+    return amount;
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,7 +37,7 @@ export default function Home() {
   }, []);
 
   const handleAddProduct = (product: IProduct) => {
-    dispatch(addToCart(product));
+    dispatch(addToCart(product.id));
   };
 
   return (
@@ -39,7 +50,8 @@ export default function Home() {
 
           <button onClick={() => handleAddProduct(product)}>
             <div>
-              <MdAddShoppingCart size={16} color="#FFF" /> 3
+              <MdAddShoppingCart size={16} color="#FFF" />{' '}
+              {amount[product.id] || 0}
             </div>
             <span>Adicionar ao Carrinho</span>
           </button>
