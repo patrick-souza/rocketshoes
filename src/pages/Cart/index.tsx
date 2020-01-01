@@ -8,7 +8,10 @@ import {
 import { Container, ProductTable, Total } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { IAppState } from 'store';
-import { removeFromCart, updateAmount } from 'store/modules/cart/actions';
+import {
+  removeFromCart,
+  updateAmountRequest,
+} from 'store/modules/cart/actions';
 import { IProduct } from 'store/modules/cart/types';
 import { formatPrice } from 'util/format';
 
@@ -35,11 +38,11 @@ export default function Cart() {
   };
 
   const handleIncrement = (product: IProduct) => {
-    dispatch(updateAmount(product.id, product.amount + 1));
+    dispatch(updateAmountRequest(product.id, product.amount + 1));
   };
 
   const handleDecrement = (product: IProduct) => {
-    dispatch(updateAmount(product.id, product.amount - 1));
+    dispatch(updateAmountRequest(product.id, product.amount - 1));
   };
 
   return (

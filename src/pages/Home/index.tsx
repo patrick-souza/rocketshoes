@@ -36,8 +36,8 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  const handleAddProduct = (product: IProduct) => {
-    dispatch(addToCart(product.id));
+  const handleAddProduct = (id: number) => {
+    dispatch(addToCart(id));
   };
 
   return (
@@ -48,7 +48,7 @@ export default function Home() {
           <strong>{product.title}</strong>
           <span>{product.priceFormatted}</span>
 
-          <button onClick={() => handleAddProduct(product)}>
+          <button onClick={() => handleAddProduct(product.id)}>
             <div>
               <MdAddShoppingCart size={16} color="#FFF" />{' '}
               {amount[product.id] || 0}

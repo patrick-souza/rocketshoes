@@ -7,7 +7,7 @@ export const addToCart = (id: number): IAction<number> => ({
 });
 
 export const addToCartSuccess = (product: IProduct): IAction<IProduct> => ({
-  type: CartActions.ADD_TO_CART,
+  type: CartActions.ADD_SUCCESS,
   payload: product,
 });
 
@@ -16,7 +16,12 @@ export const removeFromCart = (id: number): IAction<number> => ({
   payload: id,
 });
 
-export const updateAmount = (id: number, amount: number) => ({
+export const updateAmountRequest = (id: number, amount: number) => ({
   type: CartActions.UPDATE_AMOUNT,
+  payload: { id, amount },
+});
+
+export const updateAmountSuccess = (id: number, amount: number) => ({
+  type: CartActions.UPDATE_AMOUNT_SUCCESS,
   payload: { id, amount },
 });
