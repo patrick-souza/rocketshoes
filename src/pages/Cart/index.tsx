@@ -8,7 +8,8 @@ import {
 import { Container, ProductTable, Total } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { IAppState } from 'store';
-import { removeFromCart } from 'store/modules/cart/actions';
+import { removeFromCart, updateAmount } from 'store/modules/cart/actions';
+import { IProduct } from 'store/modules/cart/types';
 
 export default function Cart() {
   const products = useSelector((state: IAppState) => state.cart);
@@ -17,6 +18,15 @@ export default function Cart() {
   const handleRemoveFromCart = (id: number) => {
     dispatch(removeFromCart(id));
   };
+
+  const handleIncrement = (product: IProduct) => {
+    dispatch(updateAmount(product.id, product.amount + 1));
+  };
+
+  const handleDecrement = (product: IProduct) => {
+    dispatch(updateAmount(product.id, product.amount - 1));
+  };
+
   return (
     <Container>
       <ProductTable>
@@ -42,11 +52,19 @@ export default function Cart() {
               <td>
                 <div>
                   <button>
-                    <MdRemoveCircleOutline size={20} color="#7159c1" />
+                    <MdRemoveCircleOutline
+                      size={20}
+                      color="#7159c1"
+                      onClick={() => handleDecrement(product)}
+                    />
                   </button>
                   <input type="number" readOnly value={product.amount} />
                   <button>
-                    <MdAddCircleOutline size={20} color="#7159c1" />
+                    <MdAddCircleOutline
+                      size={20}
+                      color="#7159c1"
+                      onClick={() => handleIncrement(product)}
+                    />
                   </button>
                 </div>
               </td>

@@ -10,3 +10,8 @@ export const removeFromCart = (id: number): IAction<number> => ({
   type: CartActions.REMOVE_FROM_CART,
   payload: id,
 });
+
+export const updateAmount = (id: number, amount: number) => ({
+  type: CartActions.UPDATE_AMOUNT,
+  payload: { id, amount },
+});

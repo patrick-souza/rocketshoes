@@ -7,7 +7,7 @@ const INITIAL_STATE: IProduct[] = [];
 
 export default function cart(
   state = INITIAL_STATE,
-  action: IAction<IProduct | number>
+  action: IAction<IProduct | number | { id: number; amount: number }>
 ) {
   switch (action.type) {
     case CartActions.ADD_TO_CART:
@@ -30,6 +30,16 @@ export default function cart(
 
         if (productIndex >= 0) draft.splice(productIndex, 1);
       });
+    case CartActions.UPDATE_AMOUNT: {
+      const { id, amount } = action.payload as { id: number; amount: number };
+      if (amount <= 0) return state;
+
+      return produce(state, draft => {
+        const productIndex = draft.findIndex(p => p.id === id);
+
+        if (productIndex >= 0) draft[productIndex].amount = amount;
+      });
+    }
     default:
       return state;
   }
