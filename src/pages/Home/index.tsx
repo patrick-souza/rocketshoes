@@ -1,18 +1,41 @@
-import React from 'react';
-
-import { ProductList } from './styles';
+import React, { useState, useEffect } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import { ProductList } from './styles';
+import api from 'services/api';
+import { formatPrice } from 'util/format';
+
+type IProduct = {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  priceFormatted: string;
+};
+
 export default function Home() {
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await api.get('products');
+
+      const data = response.data.map((product: IProduct) => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }));
+      setProducts(data);
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <ProductList>
-      {[1, 2, 3, 4, 5, 6].map(i => (
-        <li key={i}>
-          <img
-            src="https://static.netshoes.com.br/produtos/tenis-caminhada-confortavel-detalhes-couro-masculino/04/E74-0413-304/E74-0413-304_detalhe2.jpg?ims=326x"
-            alt="Tenis"
-          />
-          <strong>Tenis muito legal</strong>
-          <span>R$ 190,90</span>
+      {products.map(({ id, image, priceFormatted, title }) => (
+        <li key={id}>
+          <img src={image} alt={title} />
+          <strong>{title}</strong>
+          <span>{priceFormatted}</span>
 
           <button>
             <div>
