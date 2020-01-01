@@ -11,6 +11,7 @@ import {
 import { CartActions, IProduct } from './types';
 import { formatPrice } from 'util/format';
 import { IAppState } from 'store';
+import history from 'services/history';
 
 function* addToCart(action: IAction<number>) {
   try {
@@ -43,6 +44,8 @@ function* addToCart(action: IAction<number>) {
         priceFormatted: formatPrice(response.data.price),
       };
       yield put(addToCartSuccess(data));
+
+      history.push('/cart');
     }
   } catch (error) {}
 }
