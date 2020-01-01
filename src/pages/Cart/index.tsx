@@ -10,9 +10,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IAppState } from 'store';
 import { removeFromCart, updateAmount } from 'store/modules/cart/actions';
 import { IProduct } from 'store/modules/cart/types';
+import { formatPrice } from 'util/format';
 
 export default function Cart() {
-  const products = useSelector((state: IAppState) => state.cart);
+  const { products, total } = useSelector((state: IAppState) => {
+    const products = state.cart.map(product => ({
+      ...product,
+      subtotal: formatPrice(product.price * product.amount),
+    }));
+
+    const total = formatPrice(
+      products.reduce(
+        (total, product) => total + product.price * product.amount,
+        0
+      )
+    );
+
+    return { products, total };
+  });
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = (id: number) => {
@@ -69,7 +84,7 @@ export default function Cart() {
                 </div>
               </td>
               <td>
-                <strong>R$360,00</strong>
+                <strong>{product.subtotal}</strong>
               </td>
               <td>
                 <button onClick={() => handleRemoveFromCart(product.id)}>
@@ -85,7 +100,7 @@ export default function Cart() {
         <button>Finalizar Pedido</button>
         <Total>
           <span>Total</span>
-          <strong>R$1920,22</strong>
+          <strong>{total}</strong>
         </Total>
       </footer>
     </Container>

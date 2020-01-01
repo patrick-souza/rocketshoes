@@ -5,6 +5,7 @@ export type IProduct = {
   image: string;
   priceFormatted: string;
   amount: number;
+  subtotal: string;
 };
 
 export const CartActions = {
