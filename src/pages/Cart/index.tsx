@@ -6,12 +6,17 @@ import {
 } from 'react-icons/md';
 
 import { Container, ProductTable, Total } from './styles';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { IAppState } from 'store';
+import { removeFromCart } from 'store/modules/cart/actions';
 
 export default function Cart() {
   const products = useSelector((state: IAppState) => state.cart);
+  const dispatch = useDispatch();
 
+  const handleRemoveFromCart = (id: number) => {
+    dispatch(removeFromCart(id));
+  };
   return (
     <Container>
       <ProductTable>
@@ -49,7 +54,7 @@ export default function Cart() {
                 <strong>R$360,00</strong>
               </td>
               <td>
-                <button>
+                <button onClick={() => handleRemoveFromCart(product.id)}>
                   <MdDelete size={20} color="#7159c1" />
                 </button>
               </td>
