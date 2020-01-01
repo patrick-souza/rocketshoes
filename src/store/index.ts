@@ -6,7 +6,9 @@ import { IProduct } from './modules/cart/types';
 export type IAppState = {
   cart: IProduct[];
 };
+const enhancer =
+  process.env.NODE_ENV === 'development' ? console.tron.createEnhancer() : null;
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, enhancer);
 
 export default store;
